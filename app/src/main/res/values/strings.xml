@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Test001</string>
+    <string name="test_str">%1$d分钟，剩余：%2$d秒</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+</resources>

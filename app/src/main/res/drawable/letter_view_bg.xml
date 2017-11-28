@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="@dimen/xxhdpi_20"/>
+    <stroke android:color="@color/ksw_md_solid_normal1"/>
+    <solid android:color="@color/vote_btn_disenable_color"/>
+
+</shape>

@@ -5,4 +5,5 @@ package com.example.xieqe.test001.Interface;
  */
 
 public interface ItemClickListener {
+    void onItemClick(int position);
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="transparent_color">#FFFFFF</color>
+    <color name="ksw_md_solid_checked1">#F1F1F1</color>
+    <color name="ksw_md_solid_normal1">#707070</color>
+    <color name="colorTextFocused">#E7F5E7</color>
+    <color name="colorTextNormal">#cdcdcd</color>
+    <color name="unRechedColor">#000000</color>
+    <color name="reachedColor">#1e80f9</color>
+    <color name="numberTextColor">#252524</color>
+    <color name="colorEdittextCursor">#d4f03b</color>
+
+    <color name="setting_background">#2D4A69</color>
+    <color name="guide_background">#28425D</color>
+    <color name="button_first_text_color">#F1F1F1</color>
+    <color name="first_focus_text_color">#496889</color>
+    <color name="button_first_focus_text_color">#687686</color>
+    <color name="button_last_text_color">#54A7EC</color>
+    <color name="button_last_focus_text_color">#84A3CE</color>
+    <color name="vote_text_color">#424242</color>
+    <color name="vote_btn_disenable_color">#ccd5e1</color>
+</resources>

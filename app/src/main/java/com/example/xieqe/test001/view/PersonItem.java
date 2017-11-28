@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
  * Created by xieqe on 2017/11/27.
  */
 
-public class PhoneBookItem extends ViewGroup {
+public class PersonItem extends ViewGroup {
 
 
     @Bind(R.id.image)
@@ -24,7 +24,7 @@ public class PhoneBookItem extends ViewGroup {
     @Bind(R.id.name)
     TextView name;
 
-    public PhoneBookItem(Context context) {
+    public PersonItem(Context context) {
         super(context);
         LayoutInflater.from(context).inflate(R.layout.person_item, this, true);
         ButterKnife.bind(this);

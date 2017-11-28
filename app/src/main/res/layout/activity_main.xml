@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/activity_main">
+    <LinearLayout
+        android:id="@+id/line1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layoutAnimation="@anim/layoutanimation_test"
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/button"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="test"/>
+
+    </LinearLayout>
+    <FrameLayout
+        android:layout_marginTop="@dimen/xxhdpi_100"
+        android:id="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/image"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:background="@drawable/btn_zoomout_nor"/>
+
+    <com.example.xieqe.test001.view.SPView
+        android:visibility="gone"
+        android:id="@+id/spView"
+        android:layout_gravity="center"
+        android:layout_width="@dimen/xxhdpi_180"
+        android:layout_height="@dimen/xxhdpi_180"/>
+    <com.example.xieqe.test001.view.BezierView
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.example.xieqe.test001.view.CardViewGroup
+        android:visibility="gone"
+        android:layout_marginTop="100dp"
+        android:background="@color/colorTextFocused"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/xxhdpi_200">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/guide_background"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/button_first_focus_text_color"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/first_focus_text_color"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"/>
+    </com.example.xieqe.test001.view.CardViewGroup>
+
+
+    <com.example.xieqe.test001.view.LetterView
+        android:visibility="gone"
+        android:id="@+id/letter_view"
+        android:layout_gravity="right"
+        android:padding="@dimen/xxhdpi_10"
+        tools:textSize="15sp"
+        tools:textColor="@color/setting_background"
+        tools:selectedColor="@color/colorEdittextCursor"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"/>
+
+    <com.example.xieqe.test001.view.BezerView
+        android:visibility="gone"
+        android:layout_marginRight="@dimen/xxhdpi_20"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.example.xieqe.test001.view.LetterView_wx
+        android:layout_gravity="right"
+        android:layout_width="@dimen/xxhdpi_150"
+        android:layout_height="match_parent"
+        android:paddingRight="@dimen/xxhdpi_5"
+        android:layout_marginTop="@dimen/xxhdpi_80"
+        android:layout_marginBottom="@dimen/xxhdpi_80"
+        tools:textSize = "15sp"
+        tools:textColor="@color/ksw_md_solid_normal1"
+        tools:selectedColor="@color/colorTextNormal"/>
+</FrameLayout>

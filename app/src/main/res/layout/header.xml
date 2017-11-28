@@ -1,7 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="60dp"
+    android:padding="5dp"
+    android:background="@color/colorTextNormal">
+    <TextView
+        android:id="@+id/edit_text"
+        android:layout_width="match_parent"
+        android:background="@drawable/edit_background"
+        android:clickable="false"
+        android:layout_gravity="center"
+        android:layout_height="40dp"/>
+    <LinearLayout
+        android:id="@+id/search_mention"
+        android:background="@android:color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:clickable="false"
+        android:layout_gravity="center"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:clickable="false"
+            android:background="@drawable/search"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:layout_marginLeft="5dp"
+            android:textSize="16sp"
+            android:text="搜索"/>
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/speaker"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/speaker"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginRight="2dp"/>
 
-</android.support.constraint.ConstraintLayout>
+</FrameLayout>
