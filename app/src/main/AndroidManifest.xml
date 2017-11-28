@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.example.xieqe.test001">
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <permission android:name="com.example.xieqe.test001.permission.ACCESS_AIDL_SERVICE"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".socket.MainActivity"
+            android:label="@string/title_activity_main">
+        </activity>
+        <activity android:name=".socket.Main3Activity">
+        </activity>
+        <activity android:name=".socket.Main2Activity">
+        </activity>
+        <activity android:name=".ipc.MessengerActivity"/>
+
+        <activity android:name=".aidl.BookAidlTestActivity"/>
+
+        <service android:name="com.example.xieqe.test001.ipc.MessengerService"
+                 android:process=":remote"/>
+
+        <service android:name=".aidl.BookManagerService"
+                 android:process=":remote"/>
+
+        <activity android:name=".SchemeActivity">
+            <intent-filter>
+                <data
+                    android:scheme="xxx"
+                    android:host="goods"
+                    android:path="/goodDetail"
+                    android:port="8888"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <action android:name="android.intent.action.VIEW"/>
+            </intent-filter>
+        </activity>
+
+        <service android:name=".Util.KeepAliveService"
+                 android:permission="android.permission.BIND_JOB_SERVICE"/>
+    </application>
+
+</manifest>
