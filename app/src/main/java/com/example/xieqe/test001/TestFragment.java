@@ -17,14 +17,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.xieqe.test001.Bean.Person;
+import com.example.xieqe.test001.Util.LetterComparator;
+import com.example.xieqe.test001.Util.PinyinUtil;
 import com.example.xieqe.test001.adapter.HeaderFooterDecorator;
 import com.example.xieqe.test001.adapter.PersonAdapter;
 import com.example.xieqe.test001.view.FooterView;
 import com.example.xieqe.test001.view.HeaderView;
+import com.example.xieqe.test001.view.LetterDecoration;
 import com.example.xieqe.test001.view.LetterView_wx;
 import com.example.xieqe.test001.view.RecycleViewDivider;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -75,7 +79,6 @@ public class TestFragment extends Fragment implements HeaderFooterDecorator.Item
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment,container,false);
-        Log.e(TAG, "onCreateView: " );
         ButterKnife.bind(this,view);
         initData();
         initRecyclerView();
@@ -86,8 +89,11 @@ public class TestFragment extends Fragment implements HeaderFooterDecorator.Item
         persons = new ArrayList<>();
         for (int i = 0; i < Person.DATA.length; i++) {
             Person person = new Person(Person.DATA[i],getResources().getDrawable(R.mipmap.ic_launcher),"1232232");
+            String pinyin = PinyinUtil.parseToPinyin(person.getName());
+            person.setPinyin(pinyin);
             persons.add(person);
         }
+        Collections.sort(persons,new LetterComparator());
     }
 
     private void initRecyclerView(){
@@ -97,7 +103,7 @@ public class TestFragment extends Fragment implements HeaderFooterDecorator.Item
         adapter.addFooterView(new FooterView(getActivity(),persons.size()));
         adapter.setOnItemClickListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
-        recyclerView.addItemDecoration(new RecycleViewDivider(getActivity(),LinearLayoutManager.HORIZONTAL));
+        recyclerView.addItemDecoration(new LetterDecoration(getActivity()));
         recyclerView.setAdapter(adapter);
     }
 
