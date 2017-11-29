@@ -1,2 +1,2 @@
 # Practice
-some android practice code  java
+some android practice code by java
