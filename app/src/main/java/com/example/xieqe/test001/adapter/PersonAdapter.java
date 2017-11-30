@@ -18,22 +18,39 @@ import java.util.ArrayList;
 
 public class PersonAdapter extends RecyclerView.Adapter<ViewHolder> {
     private ArrayList<Person> persons;
+    private ArrayList<String> tags = new ArrayList<>();
 
     public PersonAdapter(ArrayList<Person> persons) {
         this.persons = persons;
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.person_item,parent,false);
+        View view;
+        if (!tags.contains(persons.get(viewType).getFirstLetter())){
+            tags.add(persons.get(viewType).getFirstLetter());
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.person_item_with_letter,parent,false);
+        } else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.person_item,parent,false);
+        }
+
+        view.setTag(persons.get(viewType).getFirstLetter());
         return ViewHolder.createViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        TextView firstLetter = (TextView) holder.itemView.findViewById(R.id.first_letter);
+        if (firstLetter != null) {
+            firstLetter.setText((String) holder.itemView.getTag());
+        }
         TextView textView = (TextView) holder.itemView.findViewById(R.id.name);
         textView.setText(persons.get(position).getName());
-
         ImageView imageView = (ImageView) holder.itemView.findViewById(R.id.image);
         imageView.setBackground(persons.get(position).getPortrait());
     }
@@ -42,4 +59,15 @@ public class PersonAdapter extends RecyclerView.Adapter<ViewHolder> {
     public int getItemCount() {
         return persons.size();
     }
+
+    public int getLetterPosition(String letter){
+        for (int i = 0; i < persons.size(); i++) {
+            if (persons.get(i).getFirstLetter().equals(letter)){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+
 }
