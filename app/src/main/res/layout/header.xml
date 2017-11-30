@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:padding="5dp"
-    android:background="@color/colorTextNormal">
+    android:background="@color/gray_bac">
     <TextView
         android:id="@+id/edit_text"
         android:layout_width="match_parent"
@@ -31,6 +31,7 @@
             android:layout_height="wrap_content"
             android:clickable="false"
             android:layout_marginLeft="5dp"
+            android:textColor="@color/colorTextNormal"
             android:textSize="16sp"
             android:text="搜索"/>
     </LinearLayout>
