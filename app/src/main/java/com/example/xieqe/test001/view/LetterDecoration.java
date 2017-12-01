@@ -5,13 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.xieqe.test001.R;
 
@@ -57,17 +52,14 @@ public class LetterDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void onDrawOver(Canvas canvas, RecyclerView parent, RecyclerView.State state) {
         super.onDrawOver(canvas, parent, state);
-        int position = ((LinearLayoutManager)parent.getLayoutManager()).findFirstVisibleItemPosition();
-        Log.i("===", "onDrawOver: " + position);
         //recyclerView.getChildAt(p)，获得的是当前界面第p个view的位置
         tag = (String) parent.getChildAt(0).getTag();
-
+        Log.i("===", "onDrawOver: " + tag);
         if (tag != null){
-            Log.i("===", "onDrawOver: " + tag + "--" + position);
-            tagRect.set(0,0,right,textHeight);
+            tagRect.set(left,0,right, (int) (textHeight + parent.getResources().getDimension(R.dimen.xxhdpi_5)));
             canvas.drawRect(tagRect,paint);
             float baseline = (tagRect.top + tagRect.bottom - textPaint.getFontMetrics().top - textPaint.getFontMetrics().bottom)/2;
-            canvas.drawText(tag,textHeight,baseline,textPaint);
+            canvas.drawText(tag,(float) textHeight,baseline,textPaint);
             tag = null;
         }
     }
