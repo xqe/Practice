@@ -85,10 +85,17 @@ public class TestFragment extends Fragment implements HeaderFooterDecorator.Item
     }
 
     @Override
-    public void onSelected(String letter) {
+    public void onLetterSelected(String letter) {
         int position = personAdapter.getLetterPosition(letter);
-        Log.i(TAG, "onSelected: " + position);
-        recyclerView.scrollToPosition(position);
+        if (position != -1){
+            //position + 1 排除搜索头部
+            scrollListTo(recyclerView,position + 1);
+        }
+    }
+
+    @Override
+    public void onSearchSelected() {
+        scrollListTo(recyclerView,0);
     }
 
     private void initData() {
@@ -112,6 +119,47 @@ public class TestFragment extends Fragment implements HeaderFooterDecorator.Item
         recyclerView.addItemDecoration(new LetterDecoration(getActivity()));
         recyclerView.setAdapter(adapter);
         letterView.setSelectListener(this);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                String tag = (String) recyclerView.getChildAt(0).getTag();
+                if (tag != null){
+                    letterView.setSelect(tag);
+                }
+            }
+        });
+    }
+
+    boolean move;
+    private void scrollListTo(RecyclerView recyclerView, final int position){
+        Log.e(TAG, "scrollListTo: " + position );
+        final LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        int fir = manager.findFirstVisibleItemPosition();
+        int end = manager.findLastVisibleItemPosition();
+        if (position <= fir) {
+            recyclerView.scrollToPosition(position);
+        } else if (position <= end) {
+            int top = recyclerView.getChildAt(position - fir).getTop();
+            recyclerView.scrollBy(0, top);
+        } else {
+            recyclerView.scrollToPosition(position);    //先让当前view滚动到列表内
+            move = true;
+        }
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
+        {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (move) {
+                    move = false;
+                    int n = position - manager.findFirstVisibleItemPosition();
+                    if (n >= 0 && n < recyclerView.getChildCount()) {
+                        recyclerView.scrollBy(0, recyclerView.getChildAt(n).getTop()); //滚动到顶部
+                    }
+                }
+            }
+        });
     }
 
 }

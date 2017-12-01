@@ -7,7 +7,8 @@
     <color name="ksw_md_solid_checked1">#F1F1F1</color>
     <color name="ksw_md_solid_normal1">#707070</color>
     <color name="colorTextFocused">#E7F5E7</color>
-    <color name="colorTextNormal">#cdcdcd</color>
+    <color name="colorTextNormal">#CD9B9B</color>
+    <color name="gray_bac">#DBDBDB</color>
     <color name="unRechedColor">#000000</color>
     <color name="reachedColor">#1e80f9</color>
     <color name="numberTextColor">#252524</color>

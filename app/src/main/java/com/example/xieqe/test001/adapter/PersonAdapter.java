@@ -50,7 +50,7 @@ public class PersonAdapter extends RecyclerView.Adapter<ViewHolder> {
             firstLetter.setText((String) holder.itemView.getTag());
         }
         TextView textView = (TextView) holder.itemView.findViewById(R.id.name);
-        textView.setText(persons.get(position).getName());
+        textView.setText(persons.get(position).getName() + "---" + (position + 1));
         ImageView imageView = (ImageView) holder.itemView.findViewById(R.id.image);
         imageView.setBackground(persons.get(position).getPortrait());
     }

@@ -49,7 +49,7 @@ public class LetterView_wx extends View {
     private float controlX,controlY;
     private float endX,endY;
 
-    private SelectListener selectListener;
+    private LetterSelectListener selectListener;
 
     public LetterView_wx(Context context) {
         this(context,null,0);
@@ -139,7 +139,11 @@ public class LetterView_wx extends View {
                 selectY = getPaddingTop() + itemH * i + itemH / 2;
                 selectIndex = i;
                 if (selectListener != null) {
-                    selectListener.onSelected(letters[i]);
+                    if (i == 0){
+                        selectListener.onSearchSelected();
+                    }else {
+                        selectListener.onLetterSelected(letters[i]);
+                    }
                 }
             }
         }
@@ -152,12 +156,12 @@ public class LetterView_wx extends View {
 
         //draw red circle
         selectPaint.setColor(Color.RED);
-        canvas.drawCircle(drawX,selectY - textH / 3,textH / 2,selectPaint);
+        canvas.drawCircle(drawX,getPaddingTop() + itemH * selectIndex + itemH / 2 - textH / 3,textH / 2,selectPaint);
 
         //draw white text in red circle
         selectPaint.setColor(Color.WHITE);
         selectPaint.setTextSize(textSize);
-        canvas.drawText(letters[selectIndex],drawX,selectY,selectPaint);
+        canvas.drawText(letters[selectIndex],drawX,getPaddingTop() + itemH * selectIndex + itemH / 2 ,selectPaint);
 
         if (isSelectMode){
             selectPaint.setColor(selectedColor);
@@ -216,11 +220,22 @@ public class LetterView_wx extends View {
         postInvalidate();
     }
 
-    public void setSelectListener(SelectListener selectListener) {
+    public void setSelect(String letter){
+        for (int i = 0; i < letters.length; i++) {
+            if (letter.toUpperCase().equals(letters[i])){
+                selectIndex = i;
+                break;
+            }
+        }
+        postInvalidate();
+    }
+
+    public void setSelectListener(LetterSelectListener selectListener) {
         this.selectListener = selectListener;
     }
 
-    public interface SelectListener{
-        void onSelected(String letter);
+    public interface LetterSelectListener{
+        void onLetterSelected(String letter);
+        void onSearchSelected();
     }
 }
