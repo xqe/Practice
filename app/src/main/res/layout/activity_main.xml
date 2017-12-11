@@ -97,4 +97,10 @@
         tools:textSize = "15sp"
         tools:textColor="@color/ksw_md_solid_normal1"
         tools:selectedColor="@color/colorTextNormal"/>
+    <com.example.xieqe.test001.view.SurfaceViewContainer
+        android:id="@+id/surfaceViewContainer"
+        android:background="@color/colorTextNormal"
+        android:layout_marginTop="100dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </FrameLayout>

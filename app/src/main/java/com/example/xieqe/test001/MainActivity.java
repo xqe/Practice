@@ -72,6 +72,7 @@ import com.example.xieqe.test001.proxy.MyInvocationHandler;
 import com.example.xieqe.test001.proxy.OperateImpl;
 import com.example.xieqe.test001.view.LetterView;
 import com.example.xieqe.test001.view.SPView;
+import com.example.xieqe.test001.view.SurfaceViewContainer;
 
 import java.io.IOException;
 import java.lang.annotation.Documented;
@@ -108,6 +109,8 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
     SPView spView;
     @Bind(R.id.letter_view)
     LetterView letterView;
+    @Bind(R.id.surfaceViewContainer)
+    SurfaceViewContainer surfaceViewContainer;
     private Context context;
 
     WindowManager windowManager;
@@ -177,7 +180,7 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
 
     @OnClick(R.id.button)
     public void onClick(View v) {
-        transactToFragment(new TestFragment(),"TestFragment");
+       surfaceViewContainer.toggle();
     }
 
     @OnClick(R.id.image)
