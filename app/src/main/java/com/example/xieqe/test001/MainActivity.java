@@ -176,8 +176,6 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
         transactToFragment(new TestFragment2(), "fragment2");
     }
 
-    int speed = 10;
-
     @OnClick(R.id.button)
     public void onClick(View v) {
        surfaceViewContainer.toggle();
