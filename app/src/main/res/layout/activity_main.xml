@@ -33,6 +33,37 @@
         android:layout_width="180dp"
         android:layout_height="180dp"
         android:background="@drawable/btn_zoomout_nor"/>
+    <LinearLayout
+        android:id="@+id/menuLayout"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="20dp">
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_zoomout_nor"/>
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/btn_zoomout_nor"/>
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/btn_zoomout_nor"/>
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/btn_zoomout_nor"/>
+    </LinearLayout>
 
     <com.example.xieqe.test001.view.SPView
         android:visibility="gone"
@@ -88,6 +119,7 @@
         android:layout_height="match_parent"/>
 
     <com.example.xieqe.test001.view.LetterView_wx
+        android:visibility="gone"
         android:layout_gravity="right"
         android:layout_width="@dimen/xxhdpi_150"
         android:layout_height="match_parent"
@@ -98,6 +130,7 @@
         tools:textColor="@color/ksw_md_solid_normal1"
         tools:selectedColor="@color/colorTextNormal"/>
     <com.example.xieqe.test001.view.SurfaceViewContainer
+        android:visibility="gone"
         android:id="@+id/surfaceViewContainer"
         android:background="@color/colorTextNormal"
         android:layout_marginTop="100dp"

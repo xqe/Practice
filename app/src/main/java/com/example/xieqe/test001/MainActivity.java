@@ -66,6 +66,7 @@ import com.example.xieqe.test001.SQLite.OrderDao;
 import com.example.xieqe.test001.aidl.Consumer;
 import com.example.xieqe.test001.aidl.EventStorage;
 import com.example.xieqe.test001.aidl.Producer;
+import com.example.xieqe.test001.animation.MenuInterpolator;
 import com.example.xieqe.test001.animation.SpringInterpolator;
 import com.example.xieqe.test001.proxy.IOperate;
 import com.example.xieqe.test001.proxy.MyInvocationHandler;
@@ -111,6 +112,8 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
     LetterView letterView;
     @Bind(R.id.surfaceViewContainer)
     SurfaceViewContainer surfaceViewContainer;
+    @Bind(R.id.menuLayout)
+    LinearLayout menuLayout;
     private Context context;
 
     WindowManager windowManager;
@@ -178,7 +181,7 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
 
     @OnClick(R.id.button)
     public void onClick(View v) {
-       surfaceViewContainer.toggle();
+        testMenuInterpolator();
     }
 
     @OnClick(R.id.image)
@@ -897,6 +900,13 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
         animatorSet.setInterpolator(new SpringInterpolator(0.4f));
         animatorSet.playTogether(scaleAnimatorX, scaleAnimatorY);
         animatorSet.start();
+    }
+
+    public void testMenuInterpolator() {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(menuLayout,"TranslationX",-menuLayout.getRight(),0);
+        animator.setDuration(2000);
+        animator.setInterpolator(new MenuInterpolator(0.4f));
+        animator.start();
     }
 
     public String getString() {
