@@ -4,7 +4,10 @@ import android.util.Log;
 
 import rx.Observable;
 import rx.Observer;
+import rx.Scheduler;
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by xieqe on 2017/11/16.
@@ -78,7 +81,9 @@ public class Test {
         observable.subscribe(observer);
 
         //subscriber向被观察者订阅
-        observable.subscribe(subscriber);
+        observable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
 
 
         observable1.subscribe(subscriber);

@@ -902,11 +902,28 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
         animatorSet.start();
     }
 
+    boolean isShow = true;
     public void testMenuInterpolator() {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(menuLayout,"TranslationX",-menuLayout.getRight(),0);
-        animator.setDuration(2000);
-        animator.setInterpolator(new MenuInterpolator(0.4f));
-        animator.start();
+        int offsetSeconds = 200;
+        int startY,desY;
+        for (int i = 0; i < menuLayout.getChildCount(); i++) {
+            View view = menuLayout.getChildAt(i);
+
+            if (isShow) {
+                startY = 0;
+                desY = view.getBottom();
+            } else {
+                startY = view.getBottom();
+                desY = 0;
+            }
+
+            ObjectAnimator animator = ObjectAnimator.ofFloat(view,"TranslationY",startY,desY);
+            animator.setDuration(1000 + offsetSeconds * i);
+            animator.setInterpolator(new SpringInterpolator(0.5f));
+            animator.start();
+        }
+        //menuLayout.setVisibility(isShow ? View.GONE : View.VISIBLE);
+        isShow = !isShow;
     }
 
     public String getString() {
