@@ -74,6 +74,7 @@ import com.example.xieqe.test001.proxy.OperateImpl;
 import com.example.xieqe.test001.view.LetterView;
 import com.example.xieqe.test001.view.SPView;
 import com.example.xieqe.test001.view.SurfaceViewContainer;
+import com.example.xieqe.test001.view.SurfaceViewExChangeTest;
 
 import java.io.IOException;
 import java.lang.annotation.Documented;
@@ -161,6 +162,7 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
         });
 
         new Test().testRxJava();
+        contentView.addView(new SurfaceViewExChangeTest(this));
     }
 
     OrderDao dao;
