@@ -66,12 +66,12 @@ import com.example.xieqe.test001.SQLite.OrderDao;
 import com.example.xieqe.test001.aidl.Consumer;
 import com.example.xieqe.test001.aidl.EventStorage;
 import com.example.xieqe.test001.aidl.Producer;
-import com.example.xieqe.test001.animation.MenuInterpolator;
 import com.example.xieqe.test001.animation.SpringInterpolator;
 import com.example.xieqe.test001.proxy.IOperate;
 import com.example.xieqe.test001.proxy.MyInvocationHandler;
 import com.example.xieqe.test001.proxy.OperateImpl;
 import com.example.xieqe.test001.view.LetterView;
+import com.example.xieqe.test001.view.RockerView;
 import com.example.xieqe.test001.view.SPView;
 import com.example.xieqe.test001.view.SurfaceViewContainer;
 import com.example.xieqe.test001.view.SurfaceViewExChangeTest;
@@ -115,6 +115,8 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
     SurfaceViewContainer surfaceViewContainer;
     @Bind(R.id.menuLayout)
     LinearLayout menuLayout;
+    @Bind(R.id.rocker_view)
+    RockerView rockerView;
     private Context context;
 
     WindowManager windowManager;
@@ -162,7 +164,7 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
         });
 
         new Test().testRxJava();
-        contentView.addView(new SurfaceViewExChangeTest(this));
+        //contentView.addView(new SurfaceViewExChangeTest(this));
     }
 
     OrderDao dao;
@@ -905,9 +907,10 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
     }
 
     boolean isShow = true;
+
     public void testMenuInterpolator() {
         int offsetSeconds = 200;
-        int startY,desY;
+        int startY, desY;
         for (int i = 0; i < menuLayout.getChildCount(); i++) {
             View view = menuLayout.getChildAt(i);
 
@@ -919,7 +922,7 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
                 desY = 0;
             }
 
-            ObjectAnimator animator = ObjectAnimator.ofFloat(view,"TranslationY",startY,desY);
+            ObjectAnimator animator = ObjectAnimator.ofFloat(view, "TranslationY", startY, desY);
             animator.setDuration(1000 + offsetSeconds * i);
             animator.setInterpolator(new SpringInterpolator(0.5f));
             animator.start();
