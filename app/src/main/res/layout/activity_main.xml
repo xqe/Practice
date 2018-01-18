@@ -137,10 +137,19 @@
         android:layout_marginTop="100dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-    <com.example.xieqe.test001.view.RockerView
-        android:id="@+id/rocker_view"
-        android:layout_gravity="center"
-        android:background="@color/button_first_focus_text_color"
-        android:layout_width="@dimen/xxhdpi_200"
-        android:layout_height="@dimen/xxhdpi_100"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="@dimen/xxhdpi_20">
+        <com.example.xieqe.test001.view.RockerView
+            android:layout_margin="1dp"
+            android:id="@+id/rocker_view"
+            tools:dragViewBg="@drawable/dragview_bg"
+            tools:dragViewW="60dp"
+            tools:dragViewH="60dp"
+            android:background="@drawable/rocker_view_bg"
+            android:layout_width="200dp"
+            android:layout_height="400dp"/>
+    </LinearLayout>
 </FrameLayout>

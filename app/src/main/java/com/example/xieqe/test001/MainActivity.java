@@ -56,6 +56,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -185,7 +186,11 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
 
     @OnClick(R.id.button)
     public void onClick(View v) {
-        testMenuInterpolator();
+        //testMenuInterpolator();
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(300,100);
+        //layoutParams.addRule(Gravity.CENTER);
+        layoutParams.gravity = Gravity.CENTER;
+        rockerView.setSize(layoutParams);
     }
 
     @OnClick(R.id.image)

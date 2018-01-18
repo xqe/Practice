@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -12,11 +13,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.example.xieqe.test001.R;
-import com.example.xieqe.test001.animation.DecelerateInterpolator;
-import com.example.xieqe.test001.animation.SpringInterpolator;
 
 /**
  * Created by xqe on 2018/1/3.
@@ -28,11 +29,14 @@ public class RockerView extends ViewGroup {
     private float touchX;
     private float touchY;
     private View dragView;
+    private View arrowLeft;
+    private View arrowRight;
     private int dragW;
     private int dragH;
     private int originX;
     private int originY;
-    private int dragViewResourceId;
+    private boolean isSizeChange = true;
+
     private DragListener dragListener;
 
     public RockerView(Context context) {
@@ -40,37 +44,58 @@ public class RockerView extends ViewGroup {
     }
 
     public RockerView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(attrs);
+        super(context, attrs);   init(attrs);
     }
 
     private void init(AttributeSet attrs) {
         // TODO: 从attrs中获取
-        dragW = 150;
-        dragH = 150;
-        dragViewResourceId = R.mipmap.ic_launcher;
-
+        TypedArray array = getContext().obtainStyledAttributes(attrs,R.styleable.RockerView);
+        dragW = (int) array.getDimension(R.styleable.RockerView_dragViewW,150);
+        dragH = (int) array.getDimension(R.styleable.RockerView_dragViewH,150);
+        int dragViewResourceId = array.getResourceId(R.styleable.RockerView_dragViewBg,R.drawable.rocker_view_bg);
 
         dragView = new ImageView(getContext());
-        dragView.setLayoutParams(new LayoutParams(dragW,dragH));
+        arrowLeft = new ImageView(getContext());
+        arrowRight = new ImageView(getContext());
         dragView.setBackgroundResource(dragViewResourceId);
+        arrowLeft.setBackgroundResource(R.drawable.arrow_left);
+        arrowRight.setBackgroundResource(R.drawable.arrow_right);
+
+        setViewLayoutParams();
+
+        array.recycle();
+    }
+
+    private void setViewLayoutParams() {
+        dragView.setLayoutParams(new LayoutParams(dragW,dragH));
+        arrowLeft.setLayoutParams(new LayoutParams(dragH * 3 / 15,dragH / 3));
+        arrowRight.setLayoutParams(new LayoutParams(dragH * 3 / 15,dragH / 3));
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        Log.i("----", "onMeasure" + getMeasuredHeight());
+
         if (getChildCount() == 0) {
-            Log.i("----", "onMeasure");
+            //add arrow
+            addView(arrowLeft);
+            addView(arrowRight);
             addView(dragView);
-            originX = getMeasuredWidth() / 2;
-            originY = getMeasuredHeight()/ 2;
+        }
+        if (isSizeChange) {
+            originX = MeasureSpec.getSize(widthMeasureSpec) / 2;
+            originY = MeasureSpec.getSize(heightMeasureSpec) / 2;
             touchX = originX;
             touchY = originY;
+            isSizeChange = false;
         }
     }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        arrowLeft.layout(getMeasuredWidth() / 9,getMeasuredHeight() / 2 - dragH / 6,getMeasuredWidth() / 9 + dragH * 3 / 15,getMeasuredHeight() / 2 + dragH / 6);
+        arrowRight.layout(getMeasuredWidth() * 8 / 9 - dragH * 3 / 15,getMeasuredHeight() / 2 - dragH / 6,getMeasuredWidth() * 8 / 9  ,getMeasuredHeight() / 2 + dragH / 6);
         int left = (int) (touchX - dragW / 2);
         int top = (int) (touchY - dragH / 2);
         int right = (int) (touchX + dragW / 2);
@@ -127,6 +152,14 @@ public class RockerView extends ViewGroup {
 
 
         return true;
+    }
+
+    public void setSize(LayoutParams layoutParams) {
+        isSizeChange = true;
+        setLayoutParams(layoutParams);
+        dragW = layoutParams.height * 7 / 8;
+        dragH = layoutParams.height * 7 / 8;
+        setViewLayoutParams();
     }
 
     @Override
