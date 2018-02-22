@@ -86,7 +86,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Proxy;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -160,7 +163,9 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
         letterView.setSelectListener(new LetterView.SelectListener() {
             @Override
             public void onSelected(String letter) {
-
+                ArrayList<String> arrayList1 = new ArrayList<>();
+                Set<String> set = new HashSet<>();
+                ArrayList<String> arrayList = new ArrayList<>(set);
             }
         });
 

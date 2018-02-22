@@ -64,5 +64,10 @@ public class Person {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
     public static String[] DATA = {"张三","李四","王五","阿猫","阿狗","阿花","白白","123","哈哈","B哥","CC","*@d","012","张三","李四","王五","阿猫","阿狗","阿花","白白","123","都是","辅导费","让他让他","张三","李四",};
 }
