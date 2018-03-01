@@ -16,38 +16,49 @@ import butterknife.OnClick;
  * Created by xieqe on 2017/6/30.
  */
 
-public class WeatherActivity extends Activity implements WeatherPresenter.IWeatherViewListener{
+public class WeatherActivity extends Activity implements IContract.IView{
     @Bind(R.id.edit)
     EditText city;
-
     @Bind(R.id.button)
     Button getData;
-
     @Bind(R.id.weatherInfo)
     EditText weatherInfoEdit;
 
-    WeatherPresenter presenter;
+    IContract.IPresenter presenter;
+    ViewProxy viewProxy;
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.weather);
         ButterKnife.bind(this);
-        presenter = new WeatherPresenter(this);
+
+        viewProxy = new ViewProxy();
+        viewProxy.bind(this);
+        //传入viewProxy.proxy生成的代理对象
+        presenter = new WeatherPresenter(viewProxy.proxy(IContract.IView.class));
     }
 
     @OnClick(R.id.button)
-    public void getData(){
-        presenter.getWeather(getCity());
+    public void onClick(){
+        presenter.getWeather();
     }
 
     @Override
-    public String getCity() {
+    public String getCityName() {
         return city.getText().toString();
     }
 
     @Override
-    public void setWeather(WeatherInfo info) {
+    public void showWeather(WeatherInfo info) {
         weatherInfoEdit.setText(info.toString());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.destroy();
+        viewProxy.destroy();
     }
 }

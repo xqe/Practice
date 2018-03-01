@@ -49,6 +49,14 @@ public class ZoomTestView extends ImageView {
                 startX = 0;
                 startY = 0;
                 break;
+            case MotionEvent.ACTION_POINTER_DOWN:
+                //非第一个手指按下
+
+                break;
+
+            case MotionEvent.ACTION_POINTER_UP:
+                //非最后一个手指离开
+                break;
             default:
         }
 

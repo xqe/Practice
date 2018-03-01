@@ -41,56 +41,55 @@ public class SurfaceViewExChangeTest extends FrameLayout {
         surfaceView1.setBackgroundColor(Color.BLUE);
         surfaceView2 = new SurfaceView(getContext());
         surfaceView2.setBackgroundColor(Color.BLACK);
-        LayoutParams lp1 = new LayoutParams(400,400);
         //lp1.setMargins(100,100,0,0);
-        addView(surfaceView1,lp1);
+        addView(surfaceView1);
 
-        LayoutParams lp2 = new LayoutParams(200,200);
         //lp2.setMargins(100,100,0,0);
-        addView(surfaceView2,lp2);
+        addView(surfaceView2);
 
-        surfaceView1.addOnLayoutChangeListener(new OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                Log.i("===1", "onLayoutChange: ==========right:" + right +",oldRight:" +oldRight);
-            }
-        });
-        surfaceView2.addOnLayoutChangeListener(new OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                Log.i("===2", "onLayoutChange: ==========right:" + right +",oldRight:" +oldRight);
-            }
-        });
-        left1 = 100;
-        top1 = 100;
-        right1 = 500;
-        bottom1 = 500;
+        left1 = 200;
+        top1 = 200;
+        right1 = 900;
+        bottom1 = 900;
 
-        left2 = 100;
-        top2 = 100;
-        right2 = 200;
-        bottom2 = 200;
+        left2 = 200;
+        top2 = 200;
+        right2 = 600;
+        bottom2 = 600;
     }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         if (!isChanged) {
+            Log.e("========", "onLayout: 蓝 大  黑小" );
             surfaceView1.layout(left1,top1,right1,bottom1);
             surfaceView2.layout(left2,top2,right2,bottom2);
-            surfaceView2.setZOrderOnTop(true);
-            surfaceView2.getHolder().setFormat(PixelFormat.TRANSPARENT);
         }else{
-            surfaceView1.layout(left2,top2,right2,bottom2);
+
+            Log.e("========", "onLayout: 蓝 小  黑大" );
+            surfaceView1.layout(left2-200,top2,right2,bottom2);
             surfaceView2.layout(left1,top1,right1,bottom1);
-            surfaceView1.setZOrderOnTop(true);
-            surfaceView1.getHolder().setFormat(PixelFormat.TRANSPARENT);
         }
     }
 
     @OnClick(R.id.button7)
     public void onClick(){
         isChanged = !isChanged;
+        if (!isChanged) {
+            Log.e("========", "onLayout: 蓝 大  黑小" );
+            surfaceView1.setZOrderOnTop(false);
+            surfaceView1.getHolder().setFormat(PixelFormat.RGBX_8888);
+            surfaceView2.setZOrderOnTop(true);
+            surfaceView2.getHolder().setFormat(PixelFormat.TRANSPARENT);
+        }else{
+
+            Log.e("========", "onLayout: 蓝 小  黑大" );
+            surfaceView2.setZOrderOnTop(false);
+            surfaceView2.getHolder().setFormat(PixelFormat.RGBX_8888);
+            surfaceView1.setZOrderOnTop(true);
+            surfaceView1.getHolder().setFormat(PixelFormat.TRANSPARENT);
+        }
         requestLayout();
     }
 }

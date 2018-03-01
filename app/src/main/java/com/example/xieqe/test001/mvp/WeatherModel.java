@@ -6,20 +6,27 @@ package com.example.xieqe.test001.mvp;
 
 public class WeatherModel {
 
-
-    public WeatherModel(){
+    private WeatherModel() {
     }
 
-    public WeatherInfo getWeather(String city){
+    public static WeatherModel getInstance() {
+        return Holder.INSTANCE;
+    }
+
+    public WeatherInfo getWeather(String city) {
         boolean isConnected = false;
         WeatherInfo info = new WeatherInfo();
 
-        /*执行网络操作，获取数据,填充info
+        /*执行网络数据请求操作，获取数据,填充info
         *
         *
         *
         * */
 
         return info;
+    }
+
+    private static class Holder {
+        private static final WeatherModel INSTANCE = new WeatherModel();
     }
 }

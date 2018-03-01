@@ -1,30 +1,32 @@
 package com.example.xieqe.test001.mvp;
 
 
+import android.util.Log;
+
 /**
  * Created by xieqe on 2017/6/30.
  */
 
-public class WeatherPresenter {
+public class WeatherPresenter implements IContract.IPresenter {
 
-    WeatherModel weatherModel;
-    IWeatherViewListener viewListener;
+    private WeatherModel weatherModel;
+    private IContract.IView view;
 
-    public WeatherPresenter(IWeatherViewListener viewListener){
-        this.viewListener = viewListener;
+    public WeatherPresenter(IContract.IView view){
+        this.view = view;
+        weatherModel = WeatherModel.getInstance();
     }
 
-    public void getWeather(String city){
+    @Override
+    public void getWeather() {
+        String city = view.getCityName();
         WeatherInfo info = weatherModel.getWeather(city);
-        viewListener.setWeather(info);
+        view.showWeather(info);
     }
 
-
-    /**在View中实现*/
-    public interface IWeatherViewListener{
-        String getCity();
-        void setWeather(WeatherInfo info);
+    @Override
+    public void destroy() {
+        Log.i("WeatherPresenter", "destroy: ");
     }
-
 }
 
