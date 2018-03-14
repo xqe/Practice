@@ -56,18 +56,17 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xieqe.test001.Array_Link.ArrayBub;
-import com.example.xieqe.test001.RxJava.Test;
 import com.example.xieqe.test001.SQLite.OrderDao;
 import com.example.xieqe.test001.aidl.Consumer;
 import com.example.xieqe.test001.aidl.EventStorage;
 import com.example.xieqe.test001.aidl.Producer;
 import com.example.xieqe.test001.animation.SpringInterpolator;
+import com.example.xieqe.test001.memoryTest.MemoryTestActivity;
 import com.example.xieqe.test001.proxy.IOperate;
 import com.example.xieqe.test001.proxy.MyInvocationHandler;
 import com.example.xieqe.test001.proxy.OperateImpl;
@@ -75,7 +74,6 @@ import com.example.xieqe.test001.view.LetterView;
 import com.example.xieqe.test001.view.RockerView;
 import com.example.xieqe.test001.view.SPView;
 import com.example.xieqe.test001.view.SurfaceViewContainer;
-import com.example.xieqe.test001.view.SurfaceViewExChangeTest;
 
 import java.io.IOException;
 import java.lang.annotation.Documented;
@@ -93,7 +91,7 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.OkHttpClient;
@@ -102,33 +100,92 @@ import okhttp3.Request;
 public class MainActivity extends Activity implements TestFragment.ParentListener {
 
 
+    //需要配置的权限
+    static final String[] PERMISSIONS = new String[]{
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.ACCESS_WIFI_STATE
+    };
     private final static String TAG = "MainActivity";
-    @Bind(R.id.button)
+    //自定义请求权限返回码
+    private static final int PERMISSION_REQUEST_CODE = 100;
+    @BindView(R.id.button)
     Button button;
-    @Bind(R.id.activity_main)
+    @BindView(R.id.activity_main)
     FrameLayout contentView;
-    @Bind(R.id.image)
+    @BindView(R.id.image)
     ImageView image;
-    @Bind(R.id.line1)
+    @BindView(R.id.line1)
     LinearLayout linearLayout;
-    @Bind(R.id.spView)
+    @BindView(R.id.spView)
     SPView spView;
-    @Bind(R.id.letter_view)
+    @BindView(R.id.letter_view)
     LetterView letterView;
-    @Bind(R.id.surfaceViewContainer)
+    @BindView(R.id.surfaceViewContainer)
     SurfaceViewContainer surfaceViewContainer;
-    @Bind(R.id.menuLayout)
+    @BindView(R.id.menuLayout)
     LinearLayout menuLayout;
-    @Bind(R.id.rocker_view)
+    @BindView(R.id.rocker_view)
     RockerView rockerView;
-    private Context context;
-
     WindowManager windowManager;
     WindowManager.LayoutParams layoutParams;
     Button floatButton;
-
     TextView textView;
+    OrderDao dao;
+    boolean isRightKeyDown = false;
+    boolean isLeftKeyDown = false;
+    boolean isMultiMode = false;
+    Timer timer;
+    long actionTime = 0;
 
+    /*bubble sort end*/
+    boolean isShow = true;
+    private Context context;
+    /*LruCache end*/
+    /*LruCache start*/
+    private LruCache<String, Bitmap> memoryCache;
+    /*ThreadLocal test start*/
+    private ThreadLocal<Boolean> booleanThreadLocal = new ThreadLocal<>();
+
+
+
+    /*bitmap缩放测试 end*/
+
+    /*bitmap缩放测试 start*/
+    public static Bitmap decodeBitmapFromResource(Resources res, int resId, int reqWidth, int reqHeight) {
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(res, resId, options);
+        options.inSampleSize = calculateInsampleSize(options, reqWidth, reqHeight);
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeResource(res, resId, options);
+    }
+
+    /*组合按键监听test start*/
+
+    public static int calculateInsampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        int width = options.outWidth;
+        int height = options.outHeight;
+        int inSampleSize = 1;
+        if (width > reqWidth || height > reqHeight) {
+            int halfWidth = width / 2;
+            int halfHeight = height / 2;
+            //若宽高的一半仍大于目标宽高，就继续缩小两倍
+            while ((halfWidth / inSampleSize) >= reqWidth
+                    && (halfHeight / inSampleSize) >= reqHeight) {
+                inSampleSize *= 2;
+            }
+        }
+        return inSampleSize;
+    }
+
+    public static boolean judgeIntent(Intent intent, Context context) {
+
+        PackageManager packageManager = context.getPackageManager();
+
+        /**不含DEFAULT的Activity无法隐式启动，所以这里必须筛选含有DEFAULT的Activity*/
+        List<ResolveInfo> results = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        return !results.isEmpty();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,51 +193,14 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         ViewGroup content = (ViewGroup) findViewById(android.R.id.content);
-        ViewGroup contentView = (ViewGroup) content.getChildAt(0);
         context = this;
         String methodName = this.getPackageName();
         Log.i("MainActivity", "onCreate: =====" + methodName);
-        //huo获取到了焦点才会传递到这
-        contentView.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                Log.i(TAG, "setOnKeyListener: ========" + keyCode);
-
-                switch (keyCode) {
-                    case KeyEvent.KEYCODE_DPAD_LEFT:
-
-                        Log.i(TAG, "setOnKeyListener: ========KEYCODE_DPAD_LEFT");
-                        return true;
-                    case KeyEvent.KEYCODE_DPAD_RIGHT:
-
-                        Log.i(TAG, "setOnKeyListener: ========KEYCODE_DPAD_RIGHT");
-                        return true;
-                }
-                return false;
-            }
-        });
-
-        letterView.setSelectListener(new LetterView.SelectListener() {
-            @Override
-            public void onSelected(String letter) {
-                ArrayList<String> arrayList1 = new ArrayList<>();
-                Set<String> set = new HashSet<>();
-                ArrayList<String> arrayList = new ArrayList<>(set);
-            }
-        });
-
-        new Test().testRxJava();
-        //contentView.addView(new SurfaceViewExChangeTest(this));
     }
-
-    OrderDao dao;
 
     @Override
     protected void onResume() {
         super.onResume();
-//        dao = new OrderDao(this);
-//        dao.initTable();
-        setLayoutAnimation();
     }
 
     @Override
@@ -191,17 +211,15 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
 
     @OnClick(R.id.button)
     public void onClick(View v) {
-        //testMenuInterpolator();
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(300,100);
-        //layoutParams.addRule(Gravity.CENTER);
-        layoutParams.gravity = Gravity.CENTER;
-        rockerView.setSize(layoutParams);
+        startActivity(new Intent(this, MemoryTestActivity.class));
     }
 
     @OnClick(R.id.image)
     public void onImageViewClick(View v) {
         image.clearAnimation();
     }
+
+    /*组合按键监听test end*/
 
     /*bubble sort start*/
     public void bubbleSortTest() {
@@ -238,11 +256,6 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
         priorityQ.display();*/
     }
 
-    /*bubble sort end*/
-
-    /*LruCache start*/
-    private LruCache<String, Bitmap> memoryCache;
-
     public void lruCacheTest() {
 
         //初始化
@@ -270,73 +283,7 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
 
 
     }
-    /*LruCache end*/
-
-
-    /*bitmap缩放测试 start*/
-    public static Bitmap decodeBitmapFromResource(Resources res, int resId, int reqWidth, int reqHeight) {
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeResource(res, resId, options);
-        options.inSampleSize = calculateInsampleSize(options, reqWidth, reqHeight);
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeResource(res, resId, options);
-    }
-
-    public static int calculateInsampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        int width = options.outWidth;
-        int height = options.outHeight;
-        int inSampleSize = 1;
-        if (width > reqWidth || height > reqHeight) {
-            int halfWidth = width / 2;
-            int halfHeight = height / 2;
-            //若宽高的一半仍大于目标宽高，就继续缩小两倍
-            while ((halfWidth / inSampleSize) >= reqWidth
-                    && (halfHeight / inSampleSize) >= reqHeight) {
-                inSampleSize *= 2;
-            }
-        }
-        return inSampleSize;
-    }
-
-
-
-    /*bitmap缩放测试 end*/
-
-    /*AsyncTask test start*/
-    private class MyAsyncTask extends AsyncTask<URL, Integer, Long> {
-
-        @Override
-        protected Long doInBackground(URL... params) {
-            publishProgress(50);
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onPostExecute(Long aLong) {
-            super.onPostExecute(aLong);
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-        }
-    }
-
-    /*组合按键监听test start*/
-
-
-    boolean isRightKeyDown = false;
-    boolean isLeftKeyDown = false;
-    boolean isMultiMode = false;
-    Timer timer;
-    long actionTime = 0;
-
+    /*变长参数 test start*/
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
@@ -387,33 +334,7 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
             }
         }, 1000);
     }
-
-    /*组合按键监听test end*/
-
-
-    public class MyIntentService extends IntentService {
-
-        public MyIntentService(String name) {
-            super(name);
-        }
-
-        @Override
-        protected void onHandleIntent(Intent intent) {
-            String action = intent.getAction();
-            Log.i(TAG, "onHandleIntent: " + action);
-            SystemClock.sleep(3000);
-            if (action.equals("start")) {
-                Log.i(TAG, "onHandleIntent: task start");
-            }
-        }
-
-        @Override
-        public void onDestroy() {
-            Log.i(TAG, "IntentService onDestroy");
-            super.onDestroy();
-        }
-    }
-
+    /*ThreadLocal test end*/
 
     /*变长参数 test start*/
     public void test(int... numbers) {
@@ -421,11 +342,6 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
             Log.i(TAG, "test: " + number);
         }
     }
-    /*变长参数 test start*/
-
-
-    /*ThreadLocal test start*/
-    private ThreadLocal<Boolean> booleanThreadLocal = new ThreadLocal<>();
 
     private void threadLocalTest() {
         booleanThreadLocal.set(true);
@@ -462,8 +378,7 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
             }
         }.start();
     }
-    /*ThreadLocal test end*/
-
+    /*WindowManager test end*/
 
     /*WindowManager test start*/
     public void addViewByWindowManager() {
@@ -502,6 +417,7 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
             }
         });
     }
+    /*RemoteViews test end*/
 
     public void updateDrag(float x, float y) {
         layoutParams.alpha = 0.5f;
@@ -509,8 +425,6 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
         layoutParams.y = (int) y;
         windowManager.updateViewLayout(floatButton, layoutParams);
     }
-    /*WindowManager test end*/
-
 
     /*RemoteViews test start*/
     public void createNotification() {
@@ -536,8 +450,6 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
         notificationManager.notify(1, notification);
 
     }
-    /*RemoteViews test end*/
-
 
     /*Animation test start*/
     public void viewAnimation_scale_test() {
@@ -584,10 +496,10 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
         });
     }
 
-
     public void objectAnimator_test() {
         ObjectAnimator.ofInt(button, "width", 500).setDuration(2000).start();
     }
+    /*Animation test end*/
 
     public void testListenerChangeView() {
         final ValueAnimator valueAnimator = ValueAnimator.ofInt(1, 100);
@@ -736,8 +648,8 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
         //animatorSet1.start();
 
     }
-    /*Animation test end*/
 
+    /*test Annotation*/
 
     /*broadcastReceiver*/
     public void testBroadcastReceiver() {
@@ -780,16 +692,6 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
         thread1.start();
     }
 
-    /*test Annotation*/
-
-    @Documented
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.METHOD)
-    @Inherited
-    public @interface testAnnotation {
-
-    }
-
     /*test fragment animation*/
     public void transactToFragment(Fragment fragment, String Tag) {
         FragmentManager fragmentManager = getFragmentManager();
@@ -828,15 +730,6 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
         }
     }
 
-    public static boolean judgeIntent(Intent intent, Context context) {
-
-        PackageManager packageManager = context.getPackageManager();
-
-        /**不含DEFAULT的Activity无法隐式启动，所以这里必须筛选含有DEFAULT的Activity*/
-        List<ResolveInfo> results = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-        return !results.isEmpty();
-    }
-
     public void testLoacalBroadcastManager() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("com.xqe.testBroadcast");
@@ -858,15 +751,6 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
     }
 
     /*permission test*/
-
-    //需要配置的权限
-    static final String[] PERMISSIONS = new String[]{
-            Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.ACCESS_WIFI_STATE
-    };
-
-    //自定义请求权限返回码
-    private static final int PERMISSION_REQUEST_CODE = 100;
 
     /**
      * 检查权限，只要有权限为被授予，就重新申请所有权限
@@ -916,8 +800,6 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
         animatorSet.start();
     }
 
-    boolean isShow = true;
-
     public void testMenuInterpolator() {
         int offsetSeconds = 200;
         int startY, desY;
@@ -944,5 +826,61 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
     public String getString() {
         String s = "";
         return "";
+    }
+
+    @Documented
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.METHOD)
+    @Inherited
+    public @interface testAnnotation {
+
+    }
+
+    /*AsyncTask test start*/
+    private class MyAsyncTask extends AsyncTask<URL, Integer, Long> {
+
+        @Override
+        protected Long doInBackground(URL... params) {
+            publishProgress(50);
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Long aLong) {
+            super.onPostExecute(aLong);
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+        }
+    }
+
+    public class MyIntentService extends IntentService {
+
+        public MyIntentService(String name) {
+            super(name);
+        }
+
+        @Override
+        protected void onHandleIntent(Intent intent) {
+            String action = intent.getAction();
+            Log.i(TAG, "onHandleIntent: " + action);
+            SystemClock.sleep(3000);
+            if (action.equals("start")) {
+                Log.i(TAG, "onHandleIntent: task start");
+            }
+        }
+
+        @Override
+        public void onDestroy() {
+            Log.i(TAG, "IntentService onDestroy");
+            super.onDestroy();
+        }
     }
 }

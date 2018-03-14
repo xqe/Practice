@@ -30,6 +30,7 @@
         <activity android:name=".socket.Main2Activity">
         </activity>
         <activity android:name=".ipc.MessengerActivity"/>
+        <activity android:name=".memoryTest.MemoryTestActivity"/>
 
         <activity android:name=".aidl.BookAidlTestActivity"/>
         <activity android:name=".mvp.WeatherActivity"/>

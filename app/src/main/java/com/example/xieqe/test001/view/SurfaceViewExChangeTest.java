@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 
 import com.example.xieqe.test001.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -22,7 +22,7 @@ import butterknife.OnClick;
  */
 
 public class SurfaceViewExChangeTest extends FrameLayout {
-    @Bind(R.id.button7)
+    @BindView(R.id.button7)
     Button button7;
     SurfaceView surfaceView1;
     SurfaceView surfaceView2;

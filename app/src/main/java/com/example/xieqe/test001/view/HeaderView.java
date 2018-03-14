@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.example.xieqe.test001.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -19,11 +19,11 @@ import butterknife.ButterKnife;
  */
 
 public class HeaderView extends FrameLayout {
-    @Bind(R.id.edit_text)
+    @BindView(R.id.edit_text)
     TextView editText;
-    @Bind(R.id.search_mention)
+    @BindView(R.id.search_mention)
     LinearLayout searchMention;
-    @Bind(R.id.speaker)
+    @BindView(R.id.speaker)
     ImageView speaker;
 
     public HeaderView(Context context) {

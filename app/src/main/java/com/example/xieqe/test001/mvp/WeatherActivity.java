@@ -8,7 +8,7 @@ import android.widget.EditText;
 
 import com.example.xieqe.test001.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -17,11 +17,11 @@ import butterknife.OnClick;
  */
 
 public class WeatherActivity extends Activity implements IContract.IView{
-    @Bind(R.id.edit)
+    @BindView(R.id.edit)
     EditText city;
-    @Bind(R.id.button)
+    @BindView(R.id.button)
     Button getData;
-    @Bind(R.id.weatherInfo)
+    @BindView(R.id.weatherInfo)
     EditText weatherInfoEdit;
 
     IContract.IPresenter presenter;

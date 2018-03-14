@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.example.xieqe.test001.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -19,9 +19,9 @@ import butterknife.ButterKnife;
 public class PersonItem extends ViewGroup {
 
 
-    @Bind(R.id.image)
+    @BindView(R.id.image)
     ImageView image;
-    @Bind(R.id.name)
+    @BindView(R.id.name)
     TextView name;
 
     public PersonItem(Context context) {

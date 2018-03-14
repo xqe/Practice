@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion '26.0.2'
 
     defaultConfig {
         applicationId "com.example.xieqe.test001"
@@ -11,6 +11,7 @@ android {
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
+        flavorDimensions "versionCode"
     }
     buildTypes {
         release {
@@ -58,65 +59,21 @@ android {
         //...你可以配置多个
     }
 
-    //打包设置
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-
-        dr_sign_xiaomi_buildType {
-            debuggable false
-            jniDebuggable false
-            minifyEnabled false   //混淆
-            zipAlignEnabled true  //是否压缩对齐
-            signingConfig signingConfigs.dr_sign_xiaomi//配置签名文件
-        }
-
-        dr_sign_baidu_buildType {
-            debuggable false
-            jniDebuggable false
-            minifyEnabled false
-            zipAlignEnabled true
-            signingConfig signingConfigs.dr_sign_baidu//配置签名文件
-        }
-
-        dr_sign_wandoujia_buildType {
-            debuggable false
-            jniDebuggable false
-            minifyEnabled false
-            zipAlignEnabled true
-            signingConfig signingConfigs.dr_sign_wandoujia//配置签名文件
-        }
-    }
-    // 自定义输出配置，这里我们加上APK版本号1.0
-    applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            def outputFile = output.outputFile
-            if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                // 输出apk名称为test001_v1.0_xiaomi.apk
-                //              test001_v1.0_wandoujia.apk
-                //              test001_v1.0_baidu.apk
-                def fileName = "test001_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
-                output.outputFile = new File(outputFile.parent, fileName)
-            }
-        }
-    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile 'com.android.support:design:23.4.0'
     compile 'com.android.support:support-vector-drawable:23.4.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
-    compile 'com.squareup.okhttp3:okhttp:3.8.1'
+    compile 'com.squareup.okhttp3:okhttp:3.9.1'
     compile 'com.squareup.okio:okio:1.13.0'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'io.reactivex:rxjava:1.2.1'
-    compile 'io.reactivex:rxandroid:1.0.1'
     compile 'io.reactivex.rxjava2:rxjava:2.1.5'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'com.squareup.picasso:picasso:2.5.2'

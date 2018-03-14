@@ -22,7 +22,7 @@ import com.example.xieqe.test001.view.LetterView_wx;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -33,12 +33,12 @@ import butterknife.ButterKnife;
 public class TestFragment extends Fragment implements HeaderFooterDecorator.ItemClickListener,LetterView_wx.LetterSelectListener {
 
     private final static String TAG = "TestFragment";
-    @Bind(R.id.letterView)
+    @BindView(R.id.letterView)
     LetterView_wx letterView;
 
     private ParentListener parentListener;
     View view;
-    @Bind(R.id.recyclerView)
+    @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     private ArrayList<Person> persons;
     private PersonAdapter personAdapter;
@@ -46,7 +46,6 @@ public class TestFragment extends Fragment implements HeaderFooterDecorator.Item
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
     public interface ParentListener {
