@@ -61,6 +61,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xieqe.test001.Array_Link.ArrayBub;
+import com.example.xieqe.test001.LruCache.LruCacheUtils;
 import com.example.xieqe.test001.SQLite.OrderDao;
 import com.example.xieqe.test001.aidl.Consumer;
 import com.example.xieqe.test001.aidl.EventStorage;
@@ -140,9 +141,6 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
     /*bubble sort end*/
     boolean isShow = true;
     private Context context;
-    /*LruCache end*/
-    /*LruCache start*/
-    private LruCache<String, Bitmap> memoryCache;
     /*ThreadLocal test start*/
     private ThreadLocal<Boolean> booleanThreadLocal = new ThreadLocal<>();
 
@@ -256,33 +254,17 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
         priorityQ.display();*/
     }
 
-    public void lruCacheTest() {
+    private void testLruCache() {
+        LruCacheUtils.initLruCache();
+        String path  = "";
+        Bitmap bitmap = BitmapFactory.decodeFile(path);
+        LruCacheUtils.addBitmapToMemoryCache(path,bitmap);
 
-        //初始化
-        int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-        int cacheSize = maxMemory / 8; //缓存空间取内存的1/8
-        memoryCache = new LruCache<String, Bitmap>(cacheSize) {
-            @Override
-            protected int sizeOf(String key, Bitmap bitmap) {
-                //bitmap大小 = 每一像素行的字节数 * 高度
-                int size = bitmap.getRowBytes() * bitmap.getHeight() / 1024;
-                return size;
-            }
+        image.setImageBitmap(LruCacheUtils.getBitmapFromMemoryCache(path));
 
-            @Override
-            protected void entryRemoved(boolean evicted, String key, Bitmap oldValue, Bitmap newValue) {
-                super.entryRemoved(evicted, key, oldValue, newValue);
-            }
-        };
-
-        //增删查操作
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ask);
-        memoryCache.put("testKey", bitmap);           //存
-        Bitmap bitmap1 = memoryCache.get("testKey");//取
-        memoryCache.remove("testKey");              //删
-
-
+        LruCacheUtils.loadBitmap(path,image);
     }
+
     /*变长参数 test start*/
 
     @Override
