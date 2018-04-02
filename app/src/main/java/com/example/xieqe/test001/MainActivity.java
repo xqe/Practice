@@ -38,7 +38,6 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.util.LruCache;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -61,13 +60,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xieqe.test001.Array_Link.ArrayBub;
-import com.example.xieqe.test001.LruCache.LruCacheUtils;
+import com.example.xieqe.test001.LruCache.MemoryCache;
 import com.example.xieqe.test001.SQLite.OrderDao;
 import com.example.xieqe.test001.aidl.Consumer;
 import com.example.xieqe.test001.aidl.EventStorage;
 import com.example.xieqe.test001.aidl.Producer;
 import com.example.xieqe.test001.animation.SpringInterpolator;
-import com.example.xieqe.test001.memoryTest.MemoryTestActivity;
 import com.example.xieqe.test001.proxy.IOperate;
 import com.example.xieqe.test001.proxy.MyInvocationHandler;
 import com.example.xieqe.test001.proxy.OperateImpl;
@@ -85,10 +83,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Proxy;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -209,7 +204,8 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
 
     @OnClick(R.id.button)
     public void onClick(View v) {
-        startActivity(new Intent(this, MemoryTestActivity.class));
+        //startActivity(new Intent(this, MemoryTestActivity.class));
+        testScheme();
     }
 
     @OnClick(R.id.image)
@@ -255,14 +251,14 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
     }
 
     private void testLruCache() {
-        LruCacheUtils.initLruCache();
+        MemoryCache.initLruCache();
         String path  = "";
         Bitmap bitmap = BitmapFactory.decodeFile(path);
-        LruCacheUtils.addBitmapToMemoryCache(path,bitmap);
+        MemoryCache.addBitmapToMemoryCache(path,bitmap);
 
-        image.setImageBitmap(LruCacheUtils.getBitmapFromMemoryCache(path));
+        image.setImageBitmap(MemoryCache.getBitmapFromMemoryCache(path));
 
-        LruCacheUtils.loadBitmap(path,image);
+        MemoryCache.loadBitmap(path,image);
     }
 
     /*变长参数 test start*/

@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.example.xieqe.test001.Bean.Person;
 import com.example.xieqe.test001.adapter.HeaderFooterDecorator;
+import com.example.xieqe.test001.adapter.NoAttendAdapter;
 import com.example.xieqe.test001.adapter.PersonAdapter;
 import com.example.xieqe.test001.view.FooterView;
 import com.example.xieqe.test001.view.HeaderView;
@@ -57,9 +58,25 @@ public class SchemeActivity extends Activity {
 
     private void initRecyclerView() {
 
-        HeaderFooterDecorator adapter = new HeaderFooterDecorator(new PersonAdapter(persons));
+        HeaderFooterDecorator adapter = new HeaderFooterDecorator(new NoAttendAdapter(persons));
         adapter.addHeaderView(new HeaderView(this));
         adapter.addFooterView(new FooterView(this, persons.size()));
+        adapter.setOnItemClickListener(new HeaderFooterDecorator.ItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Log.i("dsd", "onItemClick: " + position);
+            }
+
+            @Override
+            public void onHeaderClick(int headerIndex) {
+                Log.i("dsd", "onHeaderClick: " + headerIndex);
+            }
+
+            @Override
+            public void onFooterClick(int footerIndex) {
+                Log.i("dsd", "onFooterClick: " + footerIndex);
+            }
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL));
         recyclerView.setAdapter(adapter);
