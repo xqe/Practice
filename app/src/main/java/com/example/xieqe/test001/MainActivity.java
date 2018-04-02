@@ -204,8 +204,7 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
 
     @OnClick(R.id.button)
     public void onClick(View v) {
-        //startActivity(new Intent(this, MemoryTestActivity.class));
-        testScheme();
+        startActivity(new Intent(MainActivity.this,WebViewActivity.class));
     }
 
     @OnClick(R.id.image)
@@ -250,16 +249,6 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
         priorityQ.display();*/
     }
 
-    private void testLruCache() {
-        MemoryCache.initLruCache();
-        String path  = "";
-        Bitmap bitmap = BitmapFactory.decodeFile(path);
-        MemoryCache.addBitmapToMemoryCache(path,bitmap);
-
-        image.setImageBitmap(MemoryCache.getBitmapFromMemoryCache(path));
-
-        MemoryCache.loadBitmap(path,image);
-    }
 
     /*变长参数 test start*/
 

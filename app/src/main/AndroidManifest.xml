@@ -29,6 +29,8 @@
 
         <activity android:name=".aidl.BookAidlTestActivity"/>
         <activity android:name=".mvp.WeatherActivity"/>
+        <activity android:name=".SurfaceViewActivity"/>
+        <activity android:name=".WebViewActivity"/>
         <service android:name="com.example.xieqe.test001.ipc.MessengerService"
                  android:process=":remote"/>
 
