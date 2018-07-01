@@ -6,9 +6,15 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+
+import dalvik.system.DexFile;
 
 /**
  * Created by xqe on 2018/7/1.
@@ -21,6 +27,28 @@ public class InjectManager {
     public static  void getAnnotationClass(Context context) {
 
     }
+
+    public static List<String > getClassName(Context context){
+        String packageName = "com.example.xieqe.test00";
+        Log.e(TAG, "getClassName: " + packageName);
+        List<String >classNameList=new ArrayList<>();
+        try {
+
+            DexFile df = new DexFile(context.getPackageCodePath());//通过DexFile查找当前的APK中可执行文件
+            Enumeration<String> enumeration = df.entries();//获取df中的元素  这里包含了所有可执行的类名 该类名包含了包名+类名的方式
+            while (enumeration.hasMoreElements()) {//遍历
+                String className = enumeration.nextElement();
+
+                if (className.contains(packageName)) {//在当前所有可执行的类里面查找包含有该包名的所有类
+                    classNameList.add(className);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return  classNameList;
+    }
+
 
     /**注解View id*/
     public static void initInjectView(Object target) {

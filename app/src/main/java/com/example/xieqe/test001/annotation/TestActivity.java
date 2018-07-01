@@ -14,7 +14,7 @@ import com.example.xieqe.test001.R;
 
 @LayoutInject(R.layout.activity_test)
 
-@InjectPage(TestActivity.class)
+@InjectPage
 public class TestActivity extends Activity {
 
     @ViewInject(R.id.text_view)
