@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -14,8 +15,10 @@ import android.view.View;
  * Created by xieqe on 2017/11/24.
  */
 
-public class BezerView extends View{
 
+public class BezerView extends View implements View.OnAttachStateChangeListener {
+
+    private static final String TAG = "BezerView";
     private float screenWidth,screenHeight;
     private float controlX,controlY;
     private Paint paint;
@@ -44,6 +47,7 @@ public class BezerView extends View{
         paint.setColor(Color.GREEN);
 
         path = new Path();
+        this.addOnAttachStateChangeListener(this);
     }
 
     @Override
@@ -78,5 +82,15 @@ public class BezerView extends View{
 
         paint.setStyle(Paint.Style.FILL);
         canvas.drawCircle(controlX,controlY,5,paint);
+    }
+
+    @Override
+    public void onViewAttachedToWindow(View v) {
+        Log.e(TAG, "onViewAttachedToWindow: " + v.getClass().getCanonicalName() );
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(View v) {
+        Log.e(TAG, "onViewDetachedFromWindow: " + v.getClass().getCanonicalName() );
     }
 }

@@ -12,6 +12,8 @@ import com.example.xieqe.test001.Bean.Bean;
 
 public class User implements Parcelable {
 
+
+
     private int userId;
     private String userName;
     private boolean isMale;

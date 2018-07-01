@@ -129,8 +129,8 @@ public class ScrollLayout extends ViewGroup {
 
 	@Override
 	public void computeScroll() {
-//当parent改变child的mScrollX或mScrollY时触发，典型的触发方式：child通过scroller完成滑动动画，view.invalidate()d调用draw()，draw()调用computeScroll()
-		// TODO Auto-generated method stub
+		//当parent改变child的mScrollX或mScrollY时触发，
+		// 典型的触发方式：child通过scroller完成滑动动画，view.invalidate()d调用draw()，draw()调用computeScroll()
 		if (mScroller.computeScrollOffset()) {//返回true表示滑动动画还未完成
 			scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
 			postInvalidate();

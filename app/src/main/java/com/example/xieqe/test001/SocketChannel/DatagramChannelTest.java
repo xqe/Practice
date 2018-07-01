@@ -1,5 +1,7 @@
 package com.example.xieqe.test001.SocketChannel;
 
+import com.example.xieqe.test001.Bean.BindPackage;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -37,11 +39,11 @@ public class DatagramChannelTest {
         datagramChannel.register(selector, SelectionKey.OP_READ);
     }
 
-    private String sendUDPPackage(ByteBuffer pack,int sendPort) throws IOException {
+    private String sendUDPPackage(ByteBuffer pack, int sendPort) throws IOException {
         String result = "";
         //255.255.255.255，有限广播，可向该局域网内所有ip段的设备发送广播
         String ip = "255.255.255.255";
-        datagramChannel.send(pack,new InetSocketAddress(ip, sendPort));
+        datagramChannel.send(pack, new InetSocketAddress(ip, sendPort));
         while (!bStop) { //未收到回复之前就一直发
             if (selector.select(200) > 0) {
                 for (SelectionKey sk : selector.selectedKeys()) {
@@ -50,8 +52,8 @@ public class DatagramChannelTest {
                     {
                         ByteBuffer buffer = ByteBuffer.allocate(1024);
                         /*第一种：receive读取方式，若调用connect之后则不能用receive方法读取 */
-					    DatagramChannel dc= (DatagramChannel)sk.channel();
-					    SocketAddress socketAddress= dc.receive(buffer);
+                        DatagramChannel dc = (DatagramChannel) sk.channel();
+                        SocketAddress socketAddress = dc.receive(buffer);
 
                         /*第二种：
                         read读取方式，只用于已连接的通道，
@@ -78,10 +80,15 @@ public class DatagramChannelTest {
         return result;
     }
 
-    public void test(int receivePort) throws IOException {
+  /*  public void test(int receivePort) throws IOException {
         initUDPConfig(receivePort);
-        ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
-        byteBuffer.put(0, (byte) 2);
-        String result = sendUDPPackage(byteBuffer,8001);
-    }
+        String[] deviceIds = new String[5];
+        deviceIds[0] = "12345678901";
+        ByteBuffer byteBuffer = new BindPackage.Builder()
+                .userName("xqe")
+                .password("12345678")
+                .deviceIds(deviceIds)
+                .build();
+        String result = sendUDPPackage(byteBuffer, 8001);
+    }*/
 }

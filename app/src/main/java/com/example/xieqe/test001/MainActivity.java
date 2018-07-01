@@ -66,6 +66,8 @@ import com.example.xieqe.test001.aidl.Consumer;
 import com.example.xieqe.test001.aidl.EventStorage;
 import com.example.xieqe.test001.aidl.Producer;
 import com.example.xieqe.test001.animation.SpringInterpolator;
+import com.example.xieqe.test001.annotation.TestActivity;
+import com.example.xieqe.test001.memoryTest.MemoryTestActivity;
 import com.example.xieqe.test001.proxy.IOperate;
 import com.example.xieqe.test001.proxy.MyInvocationHandler;
 import com.example.xieqe.test001.proxy.OperateImpl;
@@ -83,7 +85,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Proxy;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -120,6 +125,8 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
     SurfaceViewContainer surfaceViewContainer;
     @BindView(R.id.menuLayout)
     LinearLayout menuLayout;
+    @BindView(R.id.main_layout)
+    FrameLayout container;
     @BindView(R.id.rocker_view)
     RockerView rockerView;
     WindowManager windowManager;
@@ -139,6 +146,7 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
     /*ThreadLocal test start*/
     private ThreadLocal<Boolean> booleanThreadLocal = new ThreadLocal<>();
 
+    RockerView rockerView111;
 
 
     /*bitmap缩放测试 end*/
@@ -189,6 +197,18 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
         context = this;
         String methodName = this.getPackageName();
         Log.i("MainActivity", "onCreate: =====" + methodName);
+        rockerView111 = new RockerView(this);
+        rockerView111.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+                Log.e(TAG, "onViewAttachedToWindow: ==============" );
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                Log.e(TAG, "onViewDetachedFromWindow: ==============" );
+            }
+        });
     }
 
     @Override
@@ -200,11 +220,17 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
     public void clickPosition(int position) {
 
         transactToFragment(new TestFragment2(), "fragment2");
+        Fragment fragment  = new TestFragment2();
     }
 
     @OnClick(R.id.button)
     public void onClick(View v) {
-        startActivity(new Intent(MainActivity.this,WebViewActivity.class));
+        //startActivity(new Intent(this, TestActivity.class));
+        if (container.getChildCount() < 1) {
+            container.addView(rockerView111);
+        } else {
+            container.removeAllViews();
+        }
     }
 
     @OnClick(R.id.image)
@@ -248,8 +274,6 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
         priorityQ.insert(5);
         priorityQ.display();*/
     }
-
-
     /*变长参数 test start*/
 
     @Override

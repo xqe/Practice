@@ -14,13 +14,14 @@ import java.util.Set;
 public class SimpleHashMap<K,V> extends AbstractMap<K,V> {
 
     static final int SIZE = 997;
-    LinkedList<MapEntry<K,V>>[] buckets = new LinkedList[SIZE];
+    @SuppressWarnings("unchecked")
+    private LinkedList<MapEntry<K,V>>[] buckets = new LinkedList[SIZE];
 
     public V put(K key, V value) {
         V oldValue = null;
         int index = Math.abs(key.hashCode()) % SIZE;
         if (buckets[index] == null) {
-            buckets[index] = new LinkedList<MapEntry<K,V>>();
+            buckets[index] = new LinkedList<>();
         }
         LinkedList<MapEntry<K,V>> bucket = buckets[index];
 

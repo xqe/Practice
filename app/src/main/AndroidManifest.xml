@@ -26,6 +26,7 @@
         </activity>
         <activity android:name=".ipc.MessengerActivity"/>
         <activity android:name=".memoryTest.MemoryTestActivity"/>
+        <activity android:name=".annotation.TestActivity"/>
 
         <activity android:name=".aidl.BookAidlTestActivity"/>
         <activity android:name=".mvp.WeatherActivity"/>

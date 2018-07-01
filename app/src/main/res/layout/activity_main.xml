@@ -116,7 +116,7 @@
         android:layout_height="match_parent"/>
 
     <com.example.xieqe.test001.view.BezerView
-        android:visibility="gone"
+        android:layout_marginTop="@dimen/xxhdpi_50"
         android:layout_marginRight="@dimen/xxhdpi_20"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
