@@ -68,6 +68,7 @@ import com.example.xieqe.test001.aidl.Producer;
 import com.example.xieqe.test001.animation.SpringInterpolator;
 import com.example.xieqe.test001.annotation.TestActivity;
 import com.example.xieqe.test001.memoryTest.MemoryTestActivity;
+import com.example.xieqe.test001.pageListen.PageWatcher;
 import com.example.xieqe.test001.proxy.IOperate;
 import com.example.xieqe.test001.proxy.MyInvocationHandler;
 import com.example.xieqe.test001.proxy.OperateImpl;
@@ -226,11 +227,7 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
     @OnClick(R.id.button)
     public void onClick(View v) {
         //startActivity(new Intent(this, TestActivity.class));
-        if (container.getChildCount() < 1) {
-            container.addView(rockerView111);
-        } else {
-            container.removeAllViews();
-        }
+        transactToFragment(new TestFragment(), "fragment");
     }
 
     @OnClick(R.id.image)
@@ -688,6 +685,7 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         //fragmentTransaction.setCustomAnimations(R.animator.animator_test, R.animator.animator_test2);
+        PageWatcher.watchFragment(fragment);
         fragmentTransaction.replace(R.id.activity_main, fragment, Tag);
         fragmentTransaction.addToBackStack(Tag);
         fragmentTransaction.commit();

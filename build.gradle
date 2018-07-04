@@ -5,7 +5,7 @@ buildscript {
         jcenter()
         google()
         maven {
-            url 'file:/D:/work/studio_workspace/practice/release/'
+            url '/release/'
         }
     }
     dependencies {

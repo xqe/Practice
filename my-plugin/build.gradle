@@ -20,7 +20,7 @@ uploadArchives {
             pom.artifactId = 'my-plugin'
             pom.version = 1.0
             //文件发布到下面目录
-            repository(url: 'file:/D:/work/studio_workspace/practice/release/')
+            repository(url: uri('../release'))
         }
     }
 }
