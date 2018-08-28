@@ -227,7 +227,8 @@ public class MainActivity extends Activity implements TestFragment.ParentListene
     @OnClick(R.id.button)
     public void onClick(View v) {
         //startActivity(new Intent(this, TestActivity.class));
-        transactToFragment(new TestFragment(), "fragment");
+        //transactToFragment(new TestFragment(), "fragment");
+        addViewByWindowManager();
     }
 
     @OnClick(R.id.image)
